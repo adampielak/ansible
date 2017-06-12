@@ -4,5 +4,6 @@
   apt: pkg={{ item }} state=installed
   with_items:
   - open-vm-tools
-  - nfs-common
   - ssh
+
+
