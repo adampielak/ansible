@@ -1,0 +1,14 @@
+---
+
+- name: "Installing required software"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - nfs-common
+
+- name: "Mount RAMdisk"
+  mount:
+    path: /ram
+    src: ramfs
+    fstype: ramfs
+    opts: rw,size=5M,mode=777
+    state: mounted

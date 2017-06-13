@@ -1,0 +1,14 @@
+---
+
+- name: "Installing required software"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - nfs-common
+
+- name: "Mount Media"
+  mount:
+    path: /nas/media
+    src: 192.168.13.11:/datapool/media
+    fstype: nfs
+    opts: soft,intr,rsize=8192,wsize=8192
+    state: mounted
