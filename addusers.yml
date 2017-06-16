@@ -1,0 +1,10 @@
+---
+- hosts: addUserOne
+  roles:
+  - role: addusers
+    usernumber: one
+
+- hosts: addUserTwo
+  roles:
+  - role: addusers
+    usernumber: two

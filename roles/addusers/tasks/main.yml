@@ -1,0 +1,51 @@
+---
+# requires files per user:  nameone.txt and passwordone.txt (change "one" as needed"
+
+# to create password:  mkpasswd --method=sha-512
+
+- name: Add User
+  become: true
+  vars:
+    userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}.name.txt') }}"
+    userId: "{{ lookup('file', '../secretfiles/{{ usernumber }}.userid.txt') }}"
+    userPw: "{{ lookup('file', '../secretfiles/{{ usernumber }}.password.txt') }}"
+  user:
+    name: "{{ userName }}"
+    groups: adm,sudo
+    password: "{{ userPw }}"
+    shell: /bin/bash
+    uid: "{{ userId }}"
+    state: present
+    
+- name: Create user .ssh folder
+  become: true
+  vars:
+    userName: "{{ lookup('file', '../secretfiles/{{ usernumber }}.name.txt') }}"
+    userHomeFolder: "/home/{{ userName }}" 
+  file:
+    path: "{{ userHomeFolder }}/.ssh" 
+    state: directory
+    owner: "{{ userName }}"
+    group: "{{ userName }}"
+
+- name: Copy SSH files
+  become: true
+  vars:
+    userName: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}.name.txt') }}"
+    userId: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}.userid.txt') }}"
+    userPw: "{{ lookup('file', '../secretfiles/{{ usernumber }}.password.txt') }}"
+    userHomeFolder: "/home/{{ userName }}"
+    userSshPrivKeySrc: "../secretfiles/{{ usernumber }}.id_rsa"
+    userSshPrivKeyDest: "{{ userHomeFolder }}/.ssh/id_rsa"
+    userSshPubKeySrc: "../../../../secretfiles/{{ usernumber }}.id_rsa.pub"
+    userSshPubKeyDest: "{{ userHomeFolder }}/.ssh/id_rsa.pub"
+  copy:
+    src: "{{item.src}}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ userName }}"
+    group: "{{ userName }}"
+    force: true
+  with_items:
+  - {src: "{{ userSshPubKeySrc }}", dest: "{{userSshPubKeyDest}}", mode: "0400"}
+  - {src: "{{ userSshPrivKeySrc }}", dest: "{{userSshPrivKeyDest}}", mode: "0400"}
