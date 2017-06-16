@@ -1,7 +1,6 @@
 ---
-# requires files per user:  nameone.txt and passwordone.txt (change "one" as needed"
-
-# to create password:  mkpasswd --method=sha-512
+# requires files per user, each in their own folder (1/, 2/, etc):  nameone.txt, userid.txt, password.txt, id_rsa, id_rsa.pub
+# Reminder how to create password for the password.txt:  mkpasswd --method=sha-512
 
 - name: Add User
   become: true
