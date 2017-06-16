@@ -1,3 +1,4 @@
+---
 - hosts: all
   become: true
   tasks:
@@ -18,7 +19,7 @@
     notify:
       - waiting for server to come back
 
-  handlers:   
+  handlers:
   - name: waiting for server to come back
-    become: no	
+    become: no
     local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=300
