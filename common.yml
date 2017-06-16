@@ -1,21 +1,7 @@
 ---
 - include: install-common-pkgs.yml
 
-- hosts: needsramdisk
-  become: true
-  roles:
-  - ramdisk
-
-
-- hosts: needsnfsraspbian
-  become: true
-  roles:
-  - nfsraspbian
-
-- hosts: needsnfsmedia
-  become: true
-  roles:
-  - nfsmedia
+- include: fstab.yml
 
 - include: addusers.yml
 
