@@ -2,9 +2,14 @@
 - hosts: addUserOne
   roles:
   - role: addusers
-    usernumber: one
+    usernumber: 1
 
 - hosts: addUserTwo
   roles:
   - role: addusers
-    usernumber: two
+    usernumber: 2
+
+- hosts: addUserThree
+  roles:
+  - role: addusers
+    usernumber: 3

@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+  pre_tasks:
+  - name: Install Python 2
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    register: output
+    changed_when: output.stdout != ""
+
+- hosts: all
+  become: true
+  gather_facts: true
+  roles:
+  - install-common-pkgs
