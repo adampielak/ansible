@@ -4,7 +4,7 @@
   gather_facts: false
   pre_tasks:
   - name: Install Python 2
-    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    raw: test -e /usr/bin/python || (dpkg --configure -a && apt -y update && apt install -y python-minimal)
     register: output
     changed_when: output.stdout != ""
 
@@ -13,3 +13,4 @@
   gather_facts: true
   roles:
   - install-common-pkgs
+
