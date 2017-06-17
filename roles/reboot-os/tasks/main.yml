@@ -1,0 +1,14 @@
+---
+- name: Checking if Reboot is required
+  raw: "([ -f /var/run/reboot-required ] && echo 'Reboot' || echo 'NotFound')"
+  register: result
+  changed_when: false
+
+- name: Rebooting if needed
+  shell: "/bin/sleep 3 && shutdown -r now 'Ansible updates triggered'"
+  async: 1
+  poll: 0
+  when: result.stdout == "\r\nReboot\r\n"
+  notify:
+    - pause for 20 seconds
+    - waiting for server to come back

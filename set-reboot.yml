@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+
+  - name: Checking if Reboot is required
+    file:
+      path: /var/run/reboot-required
+      state: touch
+
