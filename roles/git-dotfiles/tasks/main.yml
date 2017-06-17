@@ -1,0 +1,17 @@
+---
+
+- name: git dotfiles for the users.
+  become: false
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  vars:
+    userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+    repoSrc: 'https://github.com/energyvault462/dotfiles.git'
+    repoDest: "/home/{{ userName  }}/dotfiles"
+  git:
+    repo: "{{ repoSrc }}"
+    dest: "{{ repoDest }}"
+    key_file: "/home/{{ userName }}/.ssh/id_rsa"
+    accept_hostkey: true
+  notify:
+  -  Delete .files in home directory
+  -  Creates links for the dot files

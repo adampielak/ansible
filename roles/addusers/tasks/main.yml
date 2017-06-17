@@ -34,10 +34,8 @@
     userId: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}/userid.txt') }}"
     userPw: "{{ lookup('file', '../secretfiles/{{ usernumber }}/password.txt') }}"
     userHomeFolder: "/home/{{ userName }}"
-    userSshPrivKeySrc: "../secretfiles/{{ usernumber }}/id_rsa"
-    userSshPrivKeyDest: "{{ userHomeFolder }}/.ssh/id_rsa"
-    userSshPubKeySrc: "../../../../secretfiles/{{ usernumber }}/id_rsa.pub"
-    userSshPubKeyDest: "{{ userHomeFolder }}/.ssh/id_rsa.pub"
+    userLocalSrcFolder: "../secretfiles/{{ usernumber }}/"
+    userRemoteDestFolder: "{{ userHomeFolder }}/.ssh/"
   copy:
     src: "{{item.src}}"
     dest: "{{ item.dest }}"
@@ -46,5 +44,10 @@
     group: "{{ userName }}"
     force: true
   with_items:
-  - {src: "{{ userSshPubKeySrc }}", dest: "{{userSshPubKeyDest}}", mode: "0400"}
-  - {src: "{{ userSshPrivKeySrc }}", dest: "{{userSshPrivKeyDest}}", mode: "0400"}
+  - {src: "{{ userLocalSrcFolder }}id_rsa", dest: "{{ userRemoteDestFolder }}", mode: "0400"}
+  - {src: "{{ userLocalSrcFolder }}id_rsa.pub", dest: "{{ userRemoteDestFolder }}", mode: "0400"}
+  - {src: "{{ userLocalSrcFolder }}authorized_keys", dest: "{{ userRemoteDestFolder }}", mode: "0600"}
+
+- name: Install oh my zsh
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  shell: "sh -c \"$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""

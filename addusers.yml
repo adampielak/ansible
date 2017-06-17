@@ -1,15 +1,15 @@
 ---
-- hosts: addUserOne
+- hosts: UserOne
   roles:
   - role: addusers
     usernumber: 1
 
-- hosts: addUserTwo
+- hosts: UserTwo
   roles:
   - role: addusers
     usernumber: 2
 
-- hosts: addUserThree
+- hosts: UserThree
   roles:
   - role: addusers
     usernumber: 3
