@@ -1,0 +1,14 @@
+---
+- name: Check for previous install of Oh My Zsh
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  vars:
+    userName: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}/name.txt') }}"
+  stat: path="/home/{{ userName }}/.oh-my-zsh/oh-my-zsh.sh"
+  register: p
+
+- name: Install oh my zsh
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  vars:
+    userName: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}/name.txt') }}"
+  raw: "sh /home/{{ userName }}/.oh-my-zsh/tools/upgrade.sh"
+  when:  p.stat.exists

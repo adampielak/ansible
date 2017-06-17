@@ -1,0 +1,15 @@
+---
+- hosts: UserOne
+  roles:
+  - role: update-software
+    usernumber: 1
+
+- hosts: UserTwo
+  roles:
+  - role: update-software
+    usernumber: 2
+
+- hosts: UserThree
+  roles:
+  - role: update-software
+    usernumber: 3
