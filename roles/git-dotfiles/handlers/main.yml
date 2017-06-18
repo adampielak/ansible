@@ -1,16 +1,4 @@
 ---
-- name: Delete .files in home directory
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  vars:
-    userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  file:
-    path: "{{item.src}}"
-    state: absent
-  with_items:
-  - {src: "/home/{{ userName }}/.bashrc"}
-  - {src: "/home/{{ userName }}/.gitconfig"}
-  - {src: "/home/{{ userName }}/.zshrc"}
-
 - name: Creates links for the dot files
   remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
   vars:

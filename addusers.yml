@@ -3,13 +3,19 @@
   roles:
   - role: addusers
     usernumber: 1
+  - role: git-dotfiles
+    usernumber: 1
 
 - hosts: UserTwo
   roles:
   - role: addusers
     usernumber: 2
+  - role: git-dotfiles
+    usernumber: 2
 
 - hosts: UserThree
   roles:
   - role: addusers
+    usernumber: 3
+  - role: git-dotfiles
     usernumber: 3

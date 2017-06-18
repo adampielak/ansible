@@ -13,5 +13,26 @@
     key_file: "/home/{{ userName }}/.ssh/id_rsa"
     accept_hostkey: true
   notify:
-  -  Delete .files in home directory
   -  Creates links for the dot files
+
+- name: Find dot files in home directory that need to be deleted
+  become: false
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  find:
+    paths: "~"
+    patterns: ".bashrc,.gitconfig,.zshrc"
+    hidden: true
+    recurse: false
+    file_type: file
+  register: find_results
+
+- name: remove files
+  become: false
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ find_results.files }}"
+  when: find_results.matched > 0
+  notify:
+  - Creates links for the dot files
