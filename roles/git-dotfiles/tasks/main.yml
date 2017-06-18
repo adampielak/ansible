@@ -36,3 +36,22 @@
   when: find_results.matched > 0
   notify:
   - Creates links for the dot files
+
+- name: Find linked files in ~/
+  become: false
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  find:
+    paths: "~"
+    patterns: ".bashrc,.gitconfig,.zshrc"
+    hidden: true
+    recurse: false
+    file_type: link
+  register: find_link_results
+
+- name: remove files (will delete if > 0 are found)
+  become: false
+  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  command: "echo not enough link files found"
+  when: find_link_results.matched < 3
+  notify:
+  - Creates links for the dot files
