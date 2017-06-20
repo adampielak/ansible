@@ -38,3 +38,8 @@
     usernumber: 2
     groupName: docker
 
+- hosts: Dev
+  become: true
+  gather_facts: false
+  roles:
+  - reboot-os
