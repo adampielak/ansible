@@ -5,7 +5,7 @@
   remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
   vars:
     userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-    repoSrc: 'https://github.com/energyvault462/dotfiles.git'
+    repoSrc: 'git@github.com:energyvault462/dotfiles.git'
     repoDest: "/home/{{ userName  }}/dotfiles"
   git:
     repo: "{{ repoSrc }}"
