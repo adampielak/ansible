@@ -1,16 +1,16 @@
 ---
-- hosts: UserOne
-  roles:
-  - role: git-dotfiles
-    usernumber: 1
+#- hosts: UserOne
+#  roles:
+#  - role: git-dotfiles
+#    usernumber: 1
 
 - hosts: UserTwo
   roles:
   - role: git-dotfiles
     usernumber: 2
 
-- hosts: UserThree
-  roles:
-  - role: git-dotfiles
-    usernumber: 3
+#- hosts: UserThree
+#  roles:
+#  - role: git-dotfiles
+#    usernumber: 3
 

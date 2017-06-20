@@ -12,46 +12,12 @@
     dest: "{{ repoDest }}"
     key_file: "/home/{{ userName }}/.ssh/id_rsa"
     accept_hostkey: true
-  notify:
-  -  Creates links for the dot files
+#  notify:
+#  -  Creates links for the dot files
 
-- name: Find dot files in home directory that need to be deleted
+- name: run install.sh to setup links
   become: false
   remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  find:
-    paths: "~"
-    patterns: ".bashrc,.gitconfig,.zshrc"
-    hidden: true
-    recurse: false
-    file_type: file
-  register: find_results
-
-- name: remove files
-  become: false
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  file:
-    path: "{{ item.path }}"
-    state: absent
-  with_items: "{{ find_results.files }}"
-  when: find_results.matched > 0
-  notify:
-  - Creates links for the dot files
-
-- name: Find linked files in ~/
-  become: false
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  find:
-    paths: "~"
-    patterns: ".bashrc,.gitconfig,.zshrc"
-    hidden: true
-    recurse: false
-    file_type: link
-  register: find_link_results
-
-- name: remove files (will delete if > 0 are found)
-  become: false
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  command: "echo not enough link files found"
-  when: find_link_results.matched < 3
-  notify:
-  - Creates links for the dot files
+  vars:
+    userName: "{{ lookup('file', '../secretfiles/{{ usernumber }}/name.txt') }}"
+  command: /bin/bash ~/dotfiles/install.sh

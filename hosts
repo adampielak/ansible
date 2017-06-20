@@ -1,26 +1,23 @@
 [all]
-vmldev14
 vmldev16
 
 [needsramdisk]
-vmldev14
 vmldev16
 
 [needsnfsraspbian]
-vmldev14
 vmldev16
 
 [needsnfsmedia]
-vmldev14
 vmldev16
 
 [UserOne]
-vmldev14
 vmldev16
 
 [UserTwo]
-vmldev14
 vmldev16
 
 [UserThree]
+vmldev16
+
+[Dev]
 vmldev16
