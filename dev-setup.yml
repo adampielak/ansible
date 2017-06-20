@@ -1,0 +1,40 @@
+---
+- hosts: Dev
+  become: true
+  gather_facts: true
+  roles:
+  - dev-install-software
+
+- hosts: Dev
+  become: true
+  gather_facts: false
+  roles:
+  - role: add-user-to-group  
+    usernumber: 1
+    groupName: docker
+
+- hosts: Dev
+  become: true
+  gather_facts: false
+  roles:
+  - role: add-user-to-group
+    usernumber: 2
+    groupName: docker
+
+- hosts: Dev
+  become: true
+  gather_facts: false
+  roles:
+  - nfsmedia
+  - nfsraspbian
+  - ramdisk
+  - logfolder
+
+- hosts: Dev
+  become: false
+  gather_facts: false
+  roles:
+  - role: git-projects
+    usernumber: 2
+    groupName: docker
+

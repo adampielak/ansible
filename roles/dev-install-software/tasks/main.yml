@@ -1,0 +1,23 @@
+---
+- name: "Installing Common Apps"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+
+- name: add docker key for repo
+  shell:  "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+
+- name: add docker repo
+  shell:  "add-apt-repository -y \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
+
+- name: apt update
+  apt: update_cache=yes
+
+- name: Install docker-ce
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - docker-ce
+

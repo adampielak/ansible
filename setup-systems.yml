@@ -1,8 +1,6 @@
 ---
 - include: install-common-pkgs.yml
 
-- include: fstab.yml
-
 - include: addusers.yml
 
 - include: update-os.yml

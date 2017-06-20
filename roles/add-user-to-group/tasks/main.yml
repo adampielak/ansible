@@ -1,0 +1,5 @@
+---
+- name: "add user {{ usernumber }} to group {{ groupName }}"
+  vars:
+    userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
+  shell: "usermod -aG {{ groupName }} {{ userName }}"

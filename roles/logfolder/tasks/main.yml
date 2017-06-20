@@ -1,0 +1,9 @@
+---
+
+- name: Create log folder
+  file: 
+    path: /log
+    state: directory
+    owner: ansible
+    group: ansible
+    mode: 0777
