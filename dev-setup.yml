@@ -1,11 +1,11 @@
 ---
-- hosts: Dev
+- hosts: DevBox
   become: true
   gather_facts: true
   roles:
   - dev-install-software
 
-- hosts: Dev
+- hosts: DevBox
   become: true
   gather_facts: false
   roles:
@@ -13,7 +13,7 @@
     usernumber: 1
     groupName: docker
 
-- hosts: Dev
+- hosts: DevBox
   become: true
   gather_facts: false
   roles:
@@ -21,7 +21,7 @@
     usernumber: 2
     groupName: docker
 
-- hosts: Dev
+- hosts: DevBox
   become: true
   gather_facts: false
   roles:
@@ -30,7 +30,7 @@
   - ramdisk
   - logfolder
 
-- hosts: Dev
+- hosts: DevBox
   become: false
   gather_facts: false
   roles:
@@ -38,7 +38,7 @@
     usernumber: 2
     groupName: docker
 
-- hosts: Dev
+- hosts: DevBox
   become: true
   gather_facts: false
   roles:

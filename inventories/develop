@@ -1,5 +1,9 @@
-[all]
+[dev]
 vmldev16
+localhost ansible_connection=local
+
+[develop:children]
+dev
 
 [needsramdisk]
 vmldev16
@@ -19,5 +23,5 @@ vmldev16
 [UserThree]
 vmldev16
 
-[Dev]
+[DevBox]
 vmldev16

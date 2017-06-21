@@ -1,5 +1,4 @@
 ---
-
 - name: "Installing Common Apps"
   apt: pkg={{ item }} state=installed
   with_items:

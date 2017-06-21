@@ -1,0 +1,20 @@
+[prod]
+localhost ansible_connection=local
+
+[production:children]
+prod
+
+[needsramdisk]
+
+[needsnfsraspbian]
+
+[needsnfsmedia]
+
+[UserOne]
+localhost
+
+[UserTwo]
+
+[UserThree]
+
+[DevBox]
