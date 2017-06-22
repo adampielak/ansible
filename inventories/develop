@@ -1,8 +1,9 @@
-[dev]
+[systems]
 localhost ansible_connection=local
+vmldev16
 
 [develop:children]
-dev
+systems
 
 [needsramdisk]
 vmldev16

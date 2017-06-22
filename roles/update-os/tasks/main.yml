@@ -2,7 +2,13 @@
   - name: Upgrade all packages in RedHat-based machines
     when: ansible_os_family == "Redhat"
     yum: name=* state=latest
+    tags:
+    - update-os
+    - travis-skip
 
   - name: Upgrade all packages in Debian-based machines
     when: ansible_os_family == "Debian"
     apt: upgrade=dist update_cache=yes
+    tags:
+    - update-os
+    - travis-skip

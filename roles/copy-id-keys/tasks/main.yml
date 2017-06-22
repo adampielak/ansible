@@ -1,0 +1,22 @@
+---
+- name: Copy SSH Files
+  become: true
+  vars:
+    userId: "{{ userlist[outer_item]['userid'] }}"
+    userHomeFolder: "/home/{{ userlist[outer_item]['username'] }}"
+    userLocalSrcFolder: "{{ userlist[outer_item]['keyfilelocation'] }}/"
+    userRemoteDestFolder: "{{ userHomeFolder }}/.ssh/"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ userlist[outer_item]['username'] }}"
+    group: "{{ userlist[outer_item]['username'] }}"
+    force: true
+  with_items:
+  - {src: "{{ userLocalSrcFolder }}id_rsa", dest: "{{ userRemoteDestFolder }}", mode: "0400"}
+  - {src: "{{ userLocalSrcFolder }}id_rsa.pub", dest: "{{ userRemoteDestFolder }}", mode: "0400"}
+  - {src: "{{ userLocalSrcFolder }}authorized_keys", dest: "{{ userRemoteDestFolder }}", mode: "0600"}
+  tags:
+  - setup-user
+  - travis-skip

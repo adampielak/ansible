@@ -1,8 +1,22 @@
 ---
-- name: testing 2
-  debug:
-#    msg: "{{ userlist[item-1] }}"
-    msg: "uname: {{ userlist[item]['username'] }} "
+- name: Create Users for Host
+  become: true
+  user:
+    name: "{{ userlist[item]['username'] }}"
+    groups: "{{ userlist[item]['groups'] }}"
+    password: "{{ userlist[item]['password'] }}"
+    shell: /usr/bin/zsh
+    uid: "{{ userlist[item]['userid'] }}"
+    state: present
   with_items:
   - "{{ users }}"
 
+- name: call copy-id-keys
+  with_items:
+  - "{{ users }}"
+  include_role:
+    name: copy-id-keys
+  vars:
+    usernum: "{{ outer_item }}"
+  loop_control:
+    loop_var: outer_item   

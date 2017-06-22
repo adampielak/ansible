@@ -1,3 +1,4 @@
 *.retry
 *.swp
+secretfiles/*
 temp.txt
