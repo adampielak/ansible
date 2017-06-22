@@ -1,2 +1,23 @@
 ---
-testvar: blahblahblah
+userlist:
+  1:
+    username: "{{ lookup('file', '..//secretfiles/1/name.txt') }}"
+    userid: "{{ lookup('file', '../secretfiles/1/userid.txt') }}"
+    password: "{{ lookup('file', '../secretfiles/1/password.txt') }}"
+    keyfilepriv: "{{ lookup('file', '../secretfiles/1/id_rsa') }}"
+    keyfilepub: "{{ lookup('file', '../secretfiles/1/id_rsa.pub') }}"
+    usernumber: 1
+  2:
+    username: "{{ lookup('file', '..//secretfiles/2/name.txt') }}"
+    userid: "{{ lookup('file', '../secretfiles/2/userid.txt') }}"
+    password: "{{ lookup('file', '../secretfiles/2/password.txt') }}"
+    keyfilepriv: "{{ lookup('file', '../secretfiles/2/id_rsa') }}"
+    keyfilepub: "{{ lookup('file', '../secretfiles/2/id_rsa.pub') }}"
+    usernumber: 2
+  3:
+    username: "{{ lookup('file', '..//secretfiles/3/name.txt') }}"
+    userid: "{{ lookup('file', '../secretfiles/3/userid.txt') }}"
+    password: "{{ lookup('file', '../secretfiles/3/password.txt') }}"
+    keyfilepriv: "{{ lookup('file', '../secretfiles/3/id_rsa') }}"
+    keyfilepub: "{{ lookup('file', '../secretfiles/3/id_rsa.pub') }}"
+    usernumber: 3

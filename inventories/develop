@@ -1,5 +1,4 @@
 [dev]
-vmldev16
 localhost ansible_connection=local
 
 [develop:children]
