@@ -1,0 +1,7 @@
+---
+- name: iterate
+  debug:
+    msg: "unum={{ item.0.usernumber }} some={{ item.1.userid }}"
+  with_subelements:
+  - "{{ users }}"
+  - data

@@ -1,3 +1,4 @@
 *.retry
 *.swp
 temp.txt
+host_vars/*
