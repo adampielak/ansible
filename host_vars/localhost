@@ -1,0 +1,3 @@
+---
+myhostname: localhost
+users: [1,2]

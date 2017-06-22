@@ -1,0 +1,15 @@
+---
+myhostname: localhost
+users: ['1']
+userlist:
+  - usernumber: 1
+    data:
+    - username: username1
+      userid: 2001
+      password: mypw1    
+  - usernumber: 2
+    data:
+    - username: username2
+      userid: 2002
+      password: mypw2
+
