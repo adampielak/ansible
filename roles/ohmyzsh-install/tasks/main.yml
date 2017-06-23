@@ -1,12 +1,19 @@
 ---
-#- name: Check for previous install of Oh My Zsh
-#  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-#  vars:
-#    userName: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}/name.txt') }}"
-#  stat: path="/home/{{ userName }}/.oh-my-zsh/oh-my-zsh.sh"
-#  register: p
 
-#- name: Install oh my zsh
-#  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-#  shell: "sh -c \"$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
-#  when: not p.stat.exists
+#- name: blah
+#  debug:
+#    msg: "blah:  {{ userlist[usernumber].username }}"
+
+  - name: test
+#    remote_user: "{{ userlist[usernumber].username }}"
+    become: yes
+    become_user: "{{ userlist[usernumber].username }}"
+    stat: path="/home/{{ userlist[usernumber].username }}/.oh-my-zsh/oh-my-zsh.sh"
+    register: p
+
+  - name: Install oh my zsh
+#    remote_user: "{{ userlist[usernumber].username }}"
+    become: yes
+    become_user: "{{ userlist[usernumber].username }}"
+    shell: "sh -c \"$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
+    when: not p.stat.exists

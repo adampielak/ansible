@@ -1,0 +1,12 @@
+---
+- name: Check for Previous Install of Oh My Zsh
+#  debug:
+#    msg: "{{ outer_item }}"
+  include_role:
+    name: ohmyzsh-install
+    usernumber: "{{ outer_item }}"
+  with_items:
+  - "{{ outer_item }}"
+  when:
+  - outer_item in users[targethost]
+

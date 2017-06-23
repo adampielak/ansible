@@ -39,3 +39,15 @@
       loop_var: outer_item
     tags:
     - dotfiles
+
+  - name: call ohmyzsh
+    include_role:
+      name: ohmyzsh
+      targethost: "{{ ansible_hostname }}"
+      usernum: "{{ outer_item }}"
+    with_items:
+    - "{{ users[ansible_hostname] }}"
+    loop_control:
+      loop_var: outer_item
+    tags:
+    - ohmyzsh

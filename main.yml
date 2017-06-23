@@ -1,0 +1,5 @@
+---
+- name:  test
+  debug:
+    msg: "install user:  {{   }}"
+  
