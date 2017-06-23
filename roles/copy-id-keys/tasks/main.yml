@@ -3,6 +3,16 @@
 #   found in group_vars folder for the data and the users dictionary
 #   to determine what users are added to a specific server.
 
+- name: Create user .ssh folder
+  become: true
+  file:
+    path: "/home/{{ userlist[outer_item]['username'] }}/.ssh" 
+    state: directory
+    owner: "{{ userlist[outer_item]['username'] }}"
+    group: "{{ userlist[outer_item]['username'] }}"
+  when:
+  - outer_item in users[targethost]
+
 - name: Copy SSH Files
   become: true
   copy:
