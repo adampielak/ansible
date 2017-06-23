@@ -18,3 +18,14 @@
     - outer_item in users[targethost]
     tags:
     - setup-user
+
+
+  - name: run install.sh to setup links
+    become: false
+    remote_user: "{{ userlist[outer_item]['username'] }}"
+    command: /bin/bash ~/dotfiles/install.sh
+    when:
+    - outer_item in users[targethost]
+    tags:
+    - setup-user
+
