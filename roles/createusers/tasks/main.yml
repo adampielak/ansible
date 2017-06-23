@@ -1,22 +1,41 @@
 ---
-- name: Create Users for Host
-  become: true
-  user:
-    name: "{{ userlist[item]['username'] }}"
-    groups: "{{ userlist[item]['groups'] }}"
-    password: "{{ userlist[item]['password'] }}"
-    shell: /usr/bin/zsh
-    uid: "{{ userlist[item]['userid'] }}"
-    state: present
-  with_items:
-  - "{{ users }}"
+# Adds users and calls copy-id-keys and git-dotfiles roles.
+#   Uses the userlist and users dictionaries found in group_vars.
+#   userlist is the data and users are which usernumbers for a given server.
 
-- name: call copy-id-keys
-  with_items:
-  - "{{ users }}"
-  include_role:
-    name: copy-id-keys
-  vars:
-    usernum: "{{ outer_item }}"
-  loop_control:
-    loop_var: outer_item   
+  - name: Create Users for Host
+    become: true
+    user:
+      name: "{{ userlist[item]['username'] }}"
+      groups: "{{ userlist[item]['groups'] }}"
+      password: "{{ userlist[item]['password'] }}"
+      shell: /usr/bin/zsh
+      uid: "{{ userlist[item]['userid'] }}"
+      state: present
+    with_items:
+    - "{{ users[ansible_hostname] }}"
+
+  - name: call copy-id-keys with only the users needed from the host file
+    include_role:
+      name: copy-id-keys
+      targethost: "{{ ansible_hostname }}"
+      usernum: "{{ outer_item }}"
+    with_items:
+    - "{{ users[ansible_hostname] }}"
+    loop_control:
+      loop_var: outer_item
+    tags:
+    - copy-keys
+
+
+  - name: call git-dotfiles with only the users needed from the host file
+    include_role:
+      name: git-dotfiles
+      targethost: "{{ ansible_hostname }}"
+      usernum: "{{ outer_item }}"
+    with_items:
+    - "{{ users[ansible_hostname] }}"
+    loop_control:
+      loop_var: outer_item
+    tags:
+    - dotfiles

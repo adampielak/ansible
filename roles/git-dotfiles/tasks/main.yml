@@ -1,23 +1,20 @@
 ---
+# Clones git repos for each user.  It uses the userlist dictionary
+#   found in group_vars folder for the data and the users dictionary
+#   to determine what users are added to a specific server.
 
-- name: git dotfiles for the users.
-  become: false
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  vars:
-    userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-    repoSrc: 'git@github.com:energyvault462/dotfiles.git'
-    repoDest: "/home/{{ userName  }}/dotfiles"
-  git:
-    repo: "{{ repoSrc }}"
-    dest: "{{ repoDest }}"
-    key_file: "/home/{{ userName }}/.ssh/id_rsa"
-    accept_hostkey: true
-#  notify:
-#  -  Creates links for the dot files
-
-- name: run install.sh to setup links
-  become: false
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  vars:
-    userName: "{{ lookup('file', '../secretfiles/{{ usernumber }}/name.txt') }}"
-  command: /bin/bash ~/dotfiles/install.sh
+- block:
+  - name: git dotfiles for users.
+    become: false
+    remote_user: "{{ userlist[outer_item]['username'] }}"
+    git:
+      repo: "{{ item.repoSrc }}"
+      dest: "{{ item.repoDest }}"
+      key_file: "{{ userlist[outer_item]['username'] }}/.ssh/id_rsa"
+      accept_hostkey: true
+    with_items:
+    - {repoSrc: "git@github.com:energyvault462/dotfiles.git", repoDest: "/home/{{ userlist[outer_item]['username'] }}/dotfiles"}
+    when:
+    - outer_item in users[targethost]
+    tags:
+    - setup-user

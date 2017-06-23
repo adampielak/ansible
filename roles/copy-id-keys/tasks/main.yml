@@ -1,11 +1,10 @@
 ---
+# Copies the id keys to the user folders.  It uses the userlist dictionary
+#   found in group_vars folder for the data and the users dictionary
+#   to determine what users are added to a specific server.
+
 - name: Copy SSH Files
   become: true
-  vars:
-    userId: "{{ userlist[outer_item]['userid'] }}"
-    userHomeFolder: "/home/{{ userlist[outer_item]['username'] }}"
-    userLocalSrcFolder: "{{ userlist[outer_item]['keyfilelocation'] }}/"
-    userRemoteDestFolder: "{{ userHomeFolder }}/.ssh/"
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -14,9 +13,11 @@
     group: "{{ userlist[outer_item]['username'] }}"
     force: true
   with_items:
-  - {src: "{{ userLocalSrcFolder }}id_rsa", dest: "{{ userRemoteDestFolder }}", mode: "0400"}
-  - {src: "{{ userLocalSrcFolder }}id_rsa.pub", dest: "{{ userRemoteDestFolder }}", mode: "0400"}
-  - {src: "{{ userLocalSrcFolder }}authorized_keys", dest: "{{ userRemoteDestFolder }}", mode: "0600"}
+  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/id_rsa", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0400"}
+  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/id_rsa.pub", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0400"}
+  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/authorized_keys", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0600"}
+  when:
+  - outer_item in users[targethost]
   tags:
   - setup-user
   - travis-skip

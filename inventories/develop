@@ -1,5 +1,5 @@
 [systems]
-localhost ansible_connection=local
+vmansible ansible_connection=local
 vmldev16
 
 [develop:children]
