@@ -1,22 +1,16 @@
 ---
-#  needs work
 - name: Check for previous install of myzsh
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  vars:
-    userName: "{{ lookup('file', '../../../../secretfiles/{{ usernumber }}/name.txt') }}"
-  stat: path="/home/{{ userName }}/.myzsh/completions/_myzsh"
+  become: yes
+  become_user: "{{ userlist[usernumber].username }}"
+  stat: path="~/.myzsh/completions/_myzsh"
   register: p
 
-- name: Install myzsh
-  become: false
-  remote_user: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-  vars:
-    userName: "{{ lookup('file', '..//secretfiles/{{ usernumber }}/name.txt') }}"
-    repoSrc: 'https://github.com/myzsh/myzsh'
-    repoDest: "/home/{{ userName  }}/.myzsh"
+- name: Install myzsh if it's not installed
+  become: yes
+  become_user: "{{ userlist[usernumber].username }}"
   git:
-    repo: "{{ repoSrc }}"
-    dest: "{{ repoDest }}"
-    key_file: "/home/{{ userName }}/.ssh/id_rsa"
+    repo: 'https://github.com/myzsh/myzsh'
+    dest: "~/.myzsh"
+    key_file: "~/.ssh/id_rsa"
     accept_hostkey: true
   when: not p.stat.exists

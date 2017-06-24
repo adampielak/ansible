@@ -51,3 +51,16 @@
       loop_var: outer_item
     tags:
     - ohmyzsh
+
+  - name: call myzsh
+    include_role:
+      name: myzsh
+      targethost: "{{ ansible_hostname }}"
+      usernum: "{{ outer_item }}"
+    with_items:
+    - "{{ users[ansible_hostname] }}"
+    loop_control:
+      loop_var: outer_item
+    tags:
+    - myzsh
+
