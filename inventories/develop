@@ -4,6 +4,12 @@ vmldev16
 [develop:children]
 systems
 
+[devops]
+vmldev16
+
+[develop:children]
+devops
+
 [needsramdisk]
 vmldev16
 
@@ -11,16 +17,4 @@ vmldev16
 vmldev16
 
 [needsnfsmedia]
-vmldev16
-
-[UserOne]
-vmldev16
-
-[UserTwo]
-vmldev16
-
-[UserThree]
-vmldev16
-
-[DevBox]
 vmldev16

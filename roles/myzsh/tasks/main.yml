@@ -1,0 +1,9 @@
+---
+- name: Call myzsh-install one user at a time.
+  include_role:
+    name: myzsh-install
+    usernumber: "{{ outer_item }}"
+  with_items:
+  - "{{ outer_item }}"
+  when:
+  - outer_item in users[targethost]

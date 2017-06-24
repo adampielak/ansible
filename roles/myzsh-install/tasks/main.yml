@@ -13,4 +13,6 @@
     dest: "~/.myzsh"
     key_file: "~/.ssh/id_rsa"
     accept_hostkey: true
-  when: not p.stat.exists
+  when: 
+  - not p.stat.exists
+  

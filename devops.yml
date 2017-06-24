@@ -1,0 +1,20 @@
+---
+- hosts: devops
+  become: true
+  gather_facts: true
+  roles:
+  - devops-install
+  - nfsmedia
+  - nfsraspbian
+  - ramdisk
+  - logfolder
+  tags:
+  - devops
+
+
+# final thing
+- hosts: devops
+  become: true
+  gather_facts: false
+  roles:
+  - reboot-os
