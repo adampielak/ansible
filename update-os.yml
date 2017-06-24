@@ -14,3 +14,5 @@
   roles:
   - update-os
   - reboot-os
+  tags:
+  - update-os
