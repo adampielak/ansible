@@ -1,5 +1,6 @@
 [systems]
 vmldev16
+vmlansible ansible_connection=local
 
 [develop:children]
 systems
