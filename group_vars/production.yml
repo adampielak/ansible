@@ -1,4 +1,9 @@
 ---
+users:
+  vmansible: [1]
+  vmldev16: [1,2]
+  vmldev: [1,2]
+
 userlist:
   1:
     username: "{{ lookup('file', '../secretfiles/1/name.txt') }}"

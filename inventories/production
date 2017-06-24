@@ -1,20 +1,21 @@
-[prod]
-localhost ansible_connection=local
+[systems]
+vmldev
+vmlansible ansible_connection=local
 
 [production:children]
-prod
+systems
+
+[devops]
+vmldev
+
+[develop:children]
+devops
 
 [needsramdisk]
+vmldev
 
 [needsnfsraspbian]
+vmldev
 
 [needsnfsmedia]
-
-[UserOne]
-localhost
-
-[UserTwo]
-
-[UserThree]
-
-[DevBox]
+vmldev
