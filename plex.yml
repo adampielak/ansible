@@ -1,0 +1,4 @@
+---
+- hosts: plex
+  roles:
+    - plexmediaserver

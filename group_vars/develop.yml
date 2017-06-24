@@ -2,6 +2,7 @@
 users:
   vmansible: [1]
   vmldev16: [1,2]
+  vmdevplex: [1,3]
 
 userlist:
   1:
@@ -25,3 +26,5 @@ userlist:
     keyfilelocation: "{{ '../secretfiles/3' }}"
     groups: "adm,sudo"
     usernumber: 3
+
+plexurl: "https://downloads.plex.tv/plex-media-server/0.9.11.16.958-80f1748/plexmediaserver_0.9.11.16.958-80f1748_amd64.deb dest=/tmp/plex.deb"

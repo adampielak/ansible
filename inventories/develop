@@ -1,6 +1,7 @@
 [systems]
 vmldev16
 vmlansible ansible_connection=local
+vmdevplex
 
 [develop:children]
 systems
@@ -8,14 +9,8 @@ systems
 [devops]
 vmldev16
 
+[plex]
+vmdevplex
+
 [develop:children]
 devops
-
-[needsramdisk]
-vmldev16
-
-[needsnfsraspbian]
-vmldev16
-
-[needsnfsmedia]
-vmldev16
