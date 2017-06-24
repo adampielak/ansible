@@ -1,7 +1,3 @@
-expand on createusers:
-  fix roles/ohmyzsh-install
-  fix roles/myzsh-install  
-
 fix the entire dev-setup playbook and role
  
 
