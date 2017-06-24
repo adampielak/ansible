@@ -1,7 +1,5 @@
 ---
-- name: Check for Previous Install of Oh My Zsh
-#  debug:
-#    msg: "{{ outer_item }}"
+- name: Call ohmyzsh-install one user at a time.
   include_role:
     name: ohmyzsh-install
     usernumber: "{{ outer_item }}"
@@ -9,4 +7,14 @@
   - "{{ outer_item }}"
   when:
   - outer_item in users[targethost]
+
+- name: Call call powerline-fonts one user at a time.
+  include_role:
+    name: powerline-fonts
+    usernumber: "{{ outer_item }}"
+  with_items:
+  - "{{ outer_item }}"
+  when:
+  - outer_item in users[targethost]
+
 
