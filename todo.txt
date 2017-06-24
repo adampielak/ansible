@@ -1,6 +1,3 @@
-fix the entire dev-setup playbook and role
-   change name from dev-setup to devops
-   set it up like the ohmyzsh is user wise.
-
+get travis ci tests
  
 
