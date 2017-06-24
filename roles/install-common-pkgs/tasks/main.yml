@@ -8,3 +8,13 @@
   - tree
   - zsh
 
+- name: Set hostname
+  hostname: name={{ ansible_hostname }}
+
+- name: Lock down UFW
+  ufw: state=disabled policy=reject
+
+- name: Enable everything through UFW for local ip range
+  ufw: rule=allow src={{ item }}
+  with_items:
+  - 192.168.13.0/16
