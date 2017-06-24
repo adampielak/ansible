@@ -1,7 +1,7 @@
 ---
 - name: git clone projects
   become: true
-  become_user: "{{ userlist[usernumber].username }}"
+  become_user: "{{  userlist[usernum]['username'] }}"
   git:
     repo: 'git@github.com:energyvault462/docker-brent.git'
     dest: "~/projects/docker-brent"

@@ -1,4 +1,4 @@
 ---
-- name: "add user {{ usernumber }} to group {{ groupname }}"
+- name: "add user user to group"
   become: yes
-  shell: "usermod -aG {{ groupName }} {{ userlist[usernumber].username }}"
+  shell: "usermod -aG {{ groupName }} {{ userlist[usernum]['username'] }}"
