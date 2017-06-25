@@ -37,28 +37,11 @@
 - name: "add backup script to cron job"
   become: true
   cron:
+    name: backup-plex
     minute: "0"
     hour: "3"
     job: "/home/{{ userlist[3].username }}/backup-plex/backup-plex.sh"
-    user: "{{ userlist[3].username }}"
-
-- name: Allow members of group to sudo execute
-  become: true
-  blockinfile:
-    block: |
-      %adm ALL=(ALL) NOPASSWD: /usr/sbin/service plexmediaserver stop, /bin/tar --exclude='/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Cache' -cvpzf /nas/backup/plex-config/plexBackup.tar.gz /var/lib/plexmediaserver
-    dest: /etc/sudoers
-    insertafter: "^%sudo\tALL=(ALL:ALL) ALL"
-
-- name: Included directories in sudo
-  become: true
-  blockinfile:
-    block: |
-      mce ALL=NOPASSWD: /home/mce/backup-schedule.sh
-      mce ALL=NOPASSWD: /usr/bin/rsync
-      mce ALL=NOPASSWD: /bin/tar
-    dest: /etc/sudoers
-    insertafter: "^#includedir /etc/sudoers.d"
+    user: "root"
 
 - name: Check if plex is already installed
   become: yes
