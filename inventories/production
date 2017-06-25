@@ -1,9 +1,13 @@
 [systems]
 vmldev
 vmlansible ansible_connection=local
+vmplex
 
 [production:children]
 systems
+
+[plex]
+vmplex
 
 [devops]
 vmldev

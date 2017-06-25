@@ -1,8 +1,11 @@
 ---
+plexurl: "https://downloads.plex.tv/plex-media-server/1.7.3.3937-70f781325/plexmediaserver_1.7.3.3937-70f781325_amd64.deb"
+plextarget: "/tmp/plex1.7.3.3937.deb"
+
 users:
   vmansible: [1]
-  vmldev16: [1,2]
   vmldev: [1,2]
+  vmplex: [1,3]
 
 userlist:
   1:
