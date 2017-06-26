@@ -2,6 +2,7 @@
 vmldev16
 vmlansible ansible_connection=local
 vmdevplex
+vmdevpar2
 
 [develop:children]
 systems
@@ -11,6 +12,9 @@ vmldev16
 
 [plex]
 vmdevplex
+
+[par2]
+vmdevpar2
 
 [develop:children]
 devops

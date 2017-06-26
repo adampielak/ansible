@@ -1,14 +1,15 @@
 ---
-- name: "Installing required software"
+- name: "Installing Common Apps"
   become: true
   apt: pkg={{ item }} state=installed
   with_items:
   - nfs-common
+  - par2
 
-- name: "Mount Offline Folder"
+- name: "Mount Media"
   become: true
   mount:
-    path: /nas/media
+    path: /nas/offline/
     src: 192.168.13.11:/datapool/media/Video/z_offline
     fstype: nfs
     opts: soft,intr,rsize=8192,wsize=8192
@@ -24,3 +25,19 @@
     accept_hostkey: true
   with_items:
   - {repoSrc: "git@github.com:energyvault462/par2protect.git", repoDest: "/home/{{ userlist[3]['username'] }}/par2protect"}
+
+- name: Call docker role to install docker
+  include_role:
+    name: docker
+
+- name: git download the docker-par2 project
+  become: false
+  remote_user: "{{ userlist[3]['username'] }}"
+  git:
+    repo: "{{ item.repoSrc }}"
+    dest: "{{ item.repoDest }}"
+    key_file: "{{ userlist[3]['username'] }}/.ssh/id_rsa"
+    accept_hostkey: true
+  with_items:
+  - {repoSrc: "git@github.com:energyvault462/docker-par2.git", repoDest: "/home/{{ userlist[3]['username'] }}/docker-par2"}
+

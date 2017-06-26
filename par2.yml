@@ -1,0 +1,4 @@
+---
+- hosts: par2
+  roles:
+    - par2
