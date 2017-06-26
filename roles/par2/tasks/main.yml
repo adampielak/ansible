@@ -6,7 +6,16 @@
   - nfs-common
   - par2
 
-- name: "Mount Media"
+- name: Create offline media folder
+  become: true
+  file: 
+    path: /nas/offline
+    state: directory
+    owner: ansible
+    group: ansible
+    mode: 0777
+
+- name: "Mount offline Media"
   become: true
   mount:
     path: /nas/offline/
