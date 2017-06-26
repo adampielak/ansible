@@ -15,29 +15,18 @@
     opts: soft,intr,rsize=8192,wsize=8192
     state: mounted
 
-- name: git download the plex backup script
-  become: false
-  remote_user: "{{ userlist[3]['username'] }}"
-  git:
-    repo: "{{ item.repoSrc }}"
-    dest: "{{ item.repoDest }}"
-    key_file: "{{ userlist[3]['username'] }}/.ssh/id_rsa"
-    accept_hostkey: true
-  with_items:
-  - {repoSrc: "git@github.com:energyvault462/par2protect.git", repoDest: "/home/{{ userlist[3]['username'] }}/par2protect"}
-
 - name: Call docker role to install docker
   include_role:
     name: docker
 
 - name: git download the docker-par2 project
   become: false
-  remote_user: "{{ userlist[3]['username'] }}"
+  remote_user: "{{ userlist[2]['username'] }}"
   git:
     repo: "{{ item.repoSrc }}"
     dest: "{{ item.repoDest }}"
-    key_file: "{{ userlist[3]['username'] }}/.ssh/id_rsa"
+    key_file: "{{ userlist[2]['username'] }}/.ssh/id_rsa"
     accept_hostkey: true
   with_items:
-  - {repoSrc: "git@github.com:energyvault462/docker-par2.git", repoDest: "/home/{{ userlist[3]['username'] }}/docker-par2"}
+  - {repoSrc: "git@github.com:energyvault462/docker-par2.git", repoDest: "/home/{{ userlist[2]['username'] }}/docker-par2"}
 
