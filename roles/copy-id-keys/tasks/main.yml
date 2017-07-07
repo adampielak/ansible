@@ -23,9 +23,29 @@
     group: "{{ userlist[outer_item]['username'] }}"
     force: true
   with_items:
-  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/id_rsa", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0400"}
-  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/id_rsa.pub", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0400"}
-  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/authorized_keys", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0600"}
+  - {src: "{{ userlist[outer_item]['keyfilelocation'] }}/.ssh/", dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh/", mode: "0700"}
+  when:
+  - outer_item in users[targethost]
+  tags:
+  - setup-user
+  - travis-skip
+
+
+- name: Set SSH Files permissions
+  become: true
+  ignore_errors: yes
+  file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ userlist[outer_item]['username'] }}"
+    group: "{{ userlist[outer_item]['username'] }}"
+    force: true
+  with_items:
+  - {path: "/home/{{ userlist[outer_item]['username'] }}/.ssh", mode: "0700"}
+  - {path: "/home/{{ userlist[outer_item]['username'] }}/.ssh/id_rsa", mode: "0400"}
+  - {path: "/home/{{ userlist[outer_item]['username'] }}/.ssh/id_rsa.pub", mode: "0400"}
+  - {path: "/home/{{ userlist[outer_item]['username'] }}/.ssh/authorized_keys", mode: "0600"}
+  - {path: "/home/{{ userlist[outer_item]['username'] }}/.ssh/20170707_key_pair.pem", mode: "0400"}
   when:
   - outer_item in users[targethost]
   tags:
