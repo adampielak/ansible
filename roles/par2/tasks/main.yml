@@ -6,14 +6,20 @@
   - nfs-common
   - par2
 
+- name: Check if mount point exists
+  stat: path=/nas/offline
+  register: check_path
+
 - name: Create offline media folder
   become: true
   file: 
     path: /nas/offline
     state: directory
-    owner: ansible
-    group: ansible
+    owner: "{{ userlist[2]['username'] }}"
+    group: "{{ userlist[2]['username'] }}"
     mode: 0777
+  when:
+  - not check_path.stat.exists
 
 - name: "Mount offline Media"
   become: true
