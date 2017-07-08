@@ -6,7 +6,7 @@ users:
   vmansible: [1]
   vmldev: [1,2]
   vmplex: [1,3]
-  vmpar2: [1,2]
+  VMPar2: [1,2]
   vmsonarr: [1,3]
 
 userlist:
