@@ -1,0 +1,22 @@
+---
+
+- name: "Installing required software"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - nfs-common
+
+- name: "dismount Raspbian"
+  mount:
+    path: /nas/raspbian
+    src: 192.168.13.11:/datapool/raspbian/cp/crashplan/programming
+    fstype: nfs
+    opts: soft,intr,rsize=8192,wsize=8192
+    state: unmounted
+
+- name: "Mount code"
+  mount:
+    path: /nas/code
+    src: 192.168.13.11:/datapool/code/cp/crashplan
+    fstype: nfs
+    opts: soft,intr,rsize=8192,wsize=8192
+    state: mounted
