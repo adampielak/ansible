@@ -1,0 +1,13 @@
+---
+- name: Add devops env variables to env-var
+  become: true
+  blockinfile:
+    dest: "/home/{{ userlist[outer_item]['username'] }}/.ssh/env-var"
+    marker: "#<!-- {mark} Adding devops variables -->"
+    block: "{{ lookup('file', '../secretfiles/env-devops.txt') }}"
+  when:
+  - outer_item in users[targethost]
+  - usernum == 2
+  tags:
+  - setup-user
+  - travis-skip
