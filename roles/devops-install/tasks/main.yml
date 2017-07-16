@@ -27,6 +27,7 @@
   include_role:
     name: env-dev
     usernum: "{{ outer_item }}"
+    targethost: "{{ ansible_hostname }}"
   with_items:
   - "{{ users[ansible_hostname] }}"
   loop_control:
