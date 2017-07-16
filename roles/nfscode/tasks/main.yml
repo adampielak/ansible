@@ -5,14 +5,6 @@
   with_items:
   - nfs-common
 
-- name: "dismount Raspbian"
-  mount:
-    path: /nas/raspbian
-    src: 192.168.13.11:/datapool/raspbian/cp/crashplan/programming
-    fstype: nfs
-    opts: soft,intr,rsize=8192,wsize=8192
-    state: unmounted
-
 - name: "Mount code"
   mount:
     path: /nas/code
@@ -20,3 +12,14 @@
     fstype: nfs
     opts: soft,intr,rsize=8192,wsize=8192
     state: mounted
+
+- name: Create link to code folder
+  become: true
+  file:
+    src: /nas/code/
+    dest: "/home/{{ userlist[item]['username'] }}/code"
+    owner: "{{ userlist[item]['username'] }}"
+    group: "{{ userlist[item]['username'] }}"
+    state: link
+  with_items:
+  - "{{ users[ansible_hostname] }}"
