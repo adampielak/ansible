@@ -22,3 +22,14 @@
     loop_var: outer_item
   tags:
   - devops
+
+- name: Call env-dev file role
+  include_role:
+    name: env-dev
+    usernum: "{{ outer_item }}"
+  with_items:
+  - "{{ users[ansible_hostname] }}"
+  loop_control:
+    loop_var: outer_item
+  tags:
+  - devops
