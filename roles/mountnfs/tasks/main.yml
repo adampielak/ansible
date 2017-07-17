@@ -1,0 +1,16 @@
+---
+- name: "Installing required software"
+  become: true
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - nfs-common
+
+- name: "Mount {{ description }}"
+  become: true
+  mount:
+    path: "{{ path }}"
+    src: "{{ src }}"
+    fstype: nfs
+    opts: soft,intr,rsize=8192,wsize=8192
+    state: mounted
+

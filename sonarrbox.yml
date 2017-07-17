@@ -1,0 +1,21 @@
+---
+- hosts: sonarr
+  vars:
+    description: "media"
+    path: "/nas/media"
+    src: "192.168.13.11:/datapool/media"
+  roles: 
+  - mountnfs
+
+- hosts: sonarr
+  vars:
+    description: "vmsonarr backup"
+    path: "/nas/backup"
+    src: "192.168.13.11:/datapool/backup/cp/crashplan/vmsonarr"
+  roles:
+  - mountnfs
+
+- hosts: sonarr
+  roles:
+  - pia
+
