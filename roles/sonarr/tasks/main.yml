@@ -1,0 +1,39 @@
+---
+- name: git sonarr-backup-restore
+  become: false
+  remote_user: "{{ userlist[3].username }}"
+  git:
+    repo: "git@bitbucket.org:energyvault462/sonarr-backup-restore.git"
+    dest: "/home/{{ userlist[3].username }}/sonarr-backup-restore"
+    key_file: "/home/{{ userlist[3].username }}/.ssh/id_rsa"
+    accept_hostkey: true
+
+- name: allow all access to port 8083
+  become: true
+  ufw:
+    rule: allow
+    port: 8083
+    proto: tcp
+
+- name: add user to sudoers so pw not required when doing service start/stop for nzbdrone
+  become: true
+  blockinfile:
+    path: /etc/sudoers
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK Sonarr"
+    block: |
+      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone start
+      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone stop
+      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone restart
+      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone status
+
+- name: check if sonarr config.xml file exists
+  stat: path="/home/{{ userlist[3].username }}/.config/NzbDrone/config.xml"
+  register: nzbdrone
+
+- name: run rsync to restore sonarr files
+  become: false
+  remote_user: "{{ userlist[3]['username'] }}"
+  command: "rsync -av --delete /nas/backup/sonarr/NzbDrone /home/mce/.config/"
+  when:
+  - not nzbdrone.stat.exists
