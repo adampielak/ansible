@@ -20,9 +20,9 @@
   register: sab
 
 - name: run sab restore.sh
-  become: false
-  remote_user: "{{ userlist[3]['username'] }}"
+  become: true
   command: "/bin/bash /home/{{ userlist[3]['username'] }}/sab-backup-restore/restore.sh"
+  ignore_errors: yes
   when:
   - not sab.stat.exists
 
@@ -75,7 +75,7 @@
 
 - name: Rebooting
   become: true
-  shell: "/bin/sleep 3 && shutdown -r now 'Ansible updates triggered'"
+  shell: "/bin/sleep 5 && shutdown -r now 'Ansible updates triggered'"
   async: 1
   poll: 0
   when: aptinstall.changed

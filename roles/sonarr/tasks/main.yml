@@ -15,18 +15,6 @@
     port: 8083
     proto: tcp
 
-- name: add user to sudoers so pw not required when doing service start/stop for nzbdrone
-  become: true
-  blockinfile:
-    path: /etc/sudoers
-    insertafter: EOF
-    marker: "# {mark} ANSIBLE MANAGED BLOCK Sonarr"
-    block: |
-      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone start
-      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone stop
-      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone restart
-      {{ userlist[3].username }} ALL=NOPASSWD: /usr/sbin/service nzbdrone status
-
 - name: check if sonarr config.xml file exists
   stat: path="/home/{{ userlist[3].username }}/.config/NzbDrone/config.xml"
   register: nzbdrone
@@ -37,3 +25,72 @@
   command: "rsync -av --delete /nas/backup/sonarr/NzbDrone /home/mce/.config/"
   when:
   - not nzbdrone.stat.exists
+
+- name: "Installing required software for Sonarr"
+  become: true
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - libmono-cil-dev
+
+- name: add sonarr key to apt
+  become: true
+  apt_key:
+    id: FDA5DFFC
+    state: present
+    keyserver: keyserver.ubuntu.com
+
+- name: add repo for Sonarr
+  become: true
+  apt_repository:
+    repo: deb http://apt.sonarr.tv/ master main
+    state: present
+
+- name: "Installing Sonarr"
+  become: true
+  apt: pkg={{ item }} state=installed update_cache=true
+  with_items:
+  - nzbdrone
+  register: aptinstall
+
+- name: change ownership of files
+  become: true
+  command: "chown -hR {{ userlist[3].username }} /opt/NzbDrone"
+  when: aptinstall.changed
+
+- name: Copy init.d/nzbdrone file
+  become: true
+  copy:
+    src: files/nzbdrone
+    dest: /etc/init.d/nzbdrone
+    mode: 0755
+    owner: root
+    group: root
+  register: initdfile
+
+- name: update-rc.d
+  become: true
+  command: "update-rc.d nzbdrone defaults"
+  when: initdfile.changed
+
+- name: start nzbdrone service
+  become: true
+  service:
+    name: nzbdrone
+    state: started
+
+- name: Create logs folder
+  remote_user: "{{ userlist[3].username }}"
+  file: 
+    path: "/home/{{ userlist[3].username }}/logs"
+    owner: "{{ userlist[3].username }}" 
+    group: "{{ userlist[3].username }}"
+    mode: 0644
+    state: directory
+
+- name: "add sonarr backup script to cron job"
+  remote_user: "{{ userlist[3].username }}"
+  cron:
+    name: backup-sonarr
+    minute: "0"
+    hour: "3"
+    job: "/home/{{ userlist[3].username }}/sonarr-backup-restore/sonarr-backup.sh > /home/{{ userlist[3].username }}/logs/sonarr-backup.txt"
