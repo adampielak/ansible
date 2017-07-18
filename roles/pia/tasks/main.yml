@@ -9,7 +9,8 @@
   register: aptinstall
 
 - name: Rebooting
-  shell: "/bin/sleep 3 && shutdown -r now 'Ansible updates triggered'"
+  become: true
+  shell: "/bin/sleep 5 && shutdown -r now 'Ansible updates triggered'"
   async: 1
   poll: 0
   when: aptinstall.changed
