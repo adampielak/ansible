@@ -17,5 +17,6 @@
 
 - hosts: sonarr
   roles:
-  - pia
-  - sabnzbd
+#  - pia
+#  - sabnzbd
+  - sonarr
