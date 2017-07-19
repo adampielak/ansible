@@ -20,9 +20,9 @@
   register: sab
 
 - name: run sab restore.sh
-  become: true
-  command: "/bin/bash /home/{{ userlist[3]['username'] }}/sab-backup-restore/restore.sh"
-  ignore_errors: yes
+  become: false
+  remote_user: "{{ userlist[3].username }}"
+  command: "mkdir /home/{{ userlist[3].username }}/.sabnzbd && cp /nas/backup/sabnzdb/sabnzbd.ini /home/{{ userlist[3].username }}/.sabnzbd/sabnzbd.ini && mkdir /home/{{ userlist[3].username }}/.sabnzbd/admin && cp /nas/backup/sabnzdb/rss_data.sab /home/{{ userlist[3].username }}/.sabnzbd/admin/rss_data.sab"
   when:
   - not sab.stat.exists
 
