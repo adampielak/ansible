@@ -1,12 +1,4 @@
 ---
-- name: git sab-backup-restore
-  become: false
-  remote_user: "{{ userlist[3].username }}"
-  git:
-    repo: "git@bitbucket.org:energyvault462/sab-backup-restore.git"
-    dest: "/home/{{ userlist[3].username }}/sab-backup-restore"
-    key_file: "/home/{{ userlist[3].username }}/.ssh/id_rsa"
-    accept_hostkey: true
 
 - name: allow all access to port 8080
   become: true
@@ -19,10 +11,29 @@
   stat: path="/home/"{{ userlist[3].username }}/.sabnzbd/sabnzdb.ini
   register: sab
 
-- name: run sab restore.sh
-  become: false
+- name: create .sabnzdb folder
   remote_user: "{{ userlist[3].username }}"
-  command: "mkdir /home/{{ userlist[3].username }}/.sabnzbd && cp /nas/backup/sabnzdb/sabnzbd.ini /home/{{ userlist[3].username }}/.sabnzbd/sabnzbd.ini && mkdir /home/{{ userlist[3].username }}/.sabnzbd/admin && cp /nas/backup/sabnzdb/rss_data.sab /home/{{ userlist[3].username }}/.sabnzbd/admin/rss_data.sab"
+  file:
+    path: "/home/{{ userlist[3].username }}/.sabnzbd"
+    state: directory
+    mode: 0700
+
+- name: create .sabnzdb/admin folder
+  remote_user: "{{ userlist[3].username }}"
+  file:
+    path: "/home/{{ userlist[3].username }}/.sabnzbd/admin"
+    state: directory
+    mode: 0700
+
+- name: restore sabnzbd.ini
+  remote_user: "{{ userlist[3].username }}"
+  command: "cp /nas/backup/sabnzdb/sabnzbd.ini /home/{{ userlist[3].username }}/.sabnzbd/sabnzbd.ini"
+  when:
+  - not sab.stat.exists
+
+- name: restore rss_data.sab
+  remote_user: "{{ userlist[3].username }}"
+  command: "cp /nas/backup/sabnzdb/rss_data.sab /home/{{ userlist[3].username }}/.sabnzbd/admin/rss_data.sab"
   when:
   - not sab.stat.exists
 
@@ -55,6 +66,32 @@
     regexp: '^PORT='
     line: 'PORT=8080'
 
+- name: Rebooting
+  become: true
+  shell: "/bin/sleep 5 && shutdown -r now 'Ansible updates triggered'"
+  async: 1
+  poll: 0
+  when: aptinstall.changed
+
+- name: pause for 25 seconds
+  pause:
+    seconds: 25
+  when: aptinstall.changed
+
+- name: waiting for server to come back
+  become: no
+  local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=300
+  when: aptinstall.changed
+
+- name: git sab-backup-restore
+  become: false
+  remote_user: "{{ userlist[3].username }}"
+  git:
+    repo: "git@bitbucket.org:energyvault462/sab-backup-restore.git"
+    dest: "/home/{{ userlist[3].username }}/sab-backup-restore"
+    key_file: "/home/{{ userlist[3].username }}/.ssh/id_rsa"
+    accept_hostkey: true
+
 - name: Create logs folder
   remote_user: "{{ userlist[3].username }}"
   file: 
@@ -72,20 +109,3 @@
     hour: "3"
     job: "/home/{{ userlist[3].username }}/sab-backup-restore/backup.sh > /home/{{ userlist[3].username }}/logs/sab-backup.txt"
     user: "root"
-
-- name: Rebooting
-  become: true
-  shell: "/bin/sleep 5 && shutdown -r now 'Ansible updates triggered'"
-  async: 1
-  poll: 0
-  when: aptinstall.changed
-
-- name: pause for 20 seconds
-  pause:
-    seconds: 20
-  when: aptinstall.changed
-
-- name: waiting for server to come back
-  become: no
-  local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=300
-  when: aptinstall.changed

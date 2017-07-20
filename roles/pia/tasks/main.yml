@@ -15,9 +15,9 @@
   poll: 0
   when: aptinstall.changed
 
-- name: pause for 20 seconds
+- name: pause for 25 seconds
   pause:
-    seconds: 20
+    seconds: 25
   when: aptinstall.changed
 
 - name: waiting for server to come back

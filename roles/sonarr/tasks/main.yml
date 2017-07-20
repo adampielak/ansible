@@ -38,6 +38,7 @@
     id: FDA5DFFC
     state: present
     keyserver: keyserver.ubuntu.com
+  ignore_errors: true
 
 - name: add repo for Sonarr
   become: true
