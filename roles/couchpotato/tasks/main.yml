@@ -1,0 +1,110 @@
+---
+- name: git couchpotato-backup-restore
+  become: false
+  remote_user: "{{ userlist[3].username }}"
+  git:
+    repo: "git@bitbucket.org:energyvault462/couchpotato-backup-restore.git"
+    dest: "/home/{{ userlist[3].username }}/couchpotato-backup-restore"
+    key_file: "/home/{{ userlist[3].username }}/.ssh/id_rsa"
+    accept_hostkey: true
+
+- name: allow all access to port 8083
+  become: true
+  ufw:
+    rule: allow
+    port: 8082
+    proto: tcp
+
+- name: check if couchpotato settings.conf file exists
+  become: true
+  stat: path="/home/{{ userlist[3].username }}/.couchpotato/settings.conf"
+  register: couchpotato
+
+- name: create .couchpotato folder
+  become: true
+  file:
+    path: "/home/{{ userlist[3].username }}/.couchpotato"
+    state: directory
+    owner: "{{ userlist[3].username }}"
+    group: "{{ userlist[3].username }}"
+    mode: 0700
+
+- name: restore couchpotato settings.conf
+  become: false
+  remote_user: "{{ userlist[3].username }}"
+  command: "cp /nas/backup/couchpotato/settings.conf /home/{{ userlist[3].username }}/.couchpotato/settings.conf"
+  when:
+  - not couchpotato.stat.exists
+
+- name: restore couchpotato database files
+  become: false
+  remote_user: "{{ userlist[3].username }}"
+  command: "rsync -av --delete /nas/backup/couchpotato/database /home/{{ userlist[3].username }}/.couchpotato"
+  when:
+  - not couchpotato.stat.exists
+
+- name: Clone CouchPotato
+  become: true
+  git:
+    repo: "https://github.com/RuudBurger/CouchPotatoServer.git"
+    dest: "/opt/couchpotato/CouchPotatoServer"
+  register: couchgit
+
+- name: Change ownership of the couchpotato files
+  become: true
+  command: "chown -R {{ userlist[3]['username'] }}:{{ userlist[3]['username'] }} /opt/couchpotato"
+  when: couchgit.changed
+
+- name: Copy /etc/default/couchpotato
+  become: true
+  copy:
+    src: files/couchpotato
+    dest: /etc/default/couchpotato
+    mode: 0644
+    owner: root
+    group: root
+
+- name: check if couchpotato init.d exists
+  become: true
+  stat: path="/etc/init.d/couchpotato"
+  register: initd
+
+- name: copy file to /etc/init.d/couchpotato
+  become: true
+  command: "cp /opt/couchpotato/CouchPotatoServer/init/ubuntu /etc/init.d/couchpotato"
+  when: not initd.stat.exists
+  register: initdfile
+
+- name: set /etc/init.d/couchpotato
+  file:
+    path: /etc/init.d/couchpotato
+    owner: root
+    group: root
+    mode: 0755
+
+- name: update-rc.d
+  become: true
+  command: "update-rc.d couchpotato defaults"
+
+- name: start couchpotato service
+  become: true
+  service:
+    name: couchpotato
+    state: started
+
+- name: Create logs folder
+  remote_user: "{{ userlist[3].username }}"
+  file: 
+    path: "/home/{{ userlist[3].username }}/logs"
+    owner: "{{ userlist[3].username }}" 
+    group: "{{ userlist[3].username }}"
+    mode: 0644
+    state: directory
+
+- name: "add couchpotato backup script to cron job"
+  remote_user: "{{ userlist[3].username }}"
+  cron:
+    name: backup-v
+    minute: "2"
+    hour: "3"
+    job: "/home/{{ userlist[3].username }}/couchpotato-backup-restore/backup.sh > /home/{{ userlist[3].username }}/logs/couchpotato-backup.txt"

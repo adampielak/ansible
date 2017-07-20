@@ -1,0 +1,3 @@
+CP_USER=mce
+CP_HOME=/opt/couchpotato/CouchPotatoServer
+CP_DATA=/home/mce/.couchpotato
