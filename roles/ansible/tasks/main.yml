@@ -23,5 +23,5 @@
   git:
     repo: 'git@bitbucket.org:energyvault462/secretfiles-backup.git'
     dest: "/home/{{  userlist[1].username }}/secretfiles-backup"
-    key_file: "/home/{{  userlist[1].username }}/id_rsa"
+    key_file: "/home/{{  userlist[1].username }}/.ssh/id_rsa"
     accept_hostkey: true
