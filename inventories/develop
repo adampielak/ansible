@@ -1,7 +1,7 @@
 [systems]
 vmldev16
 vmlansible ansible_connection=local
-vmldevansible ansible_connection=local
+vmdevansible ansible_connection=local
 vmdevplex
 vmdevpar2
 vmdevsonarr
