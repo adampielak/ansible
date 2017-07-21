@@ -7,6 +7,6 @@
   roles: 
   - mountnfs
 
-- hosts: sonarr
+- hosts: ansible
   roles:
   - ansible
