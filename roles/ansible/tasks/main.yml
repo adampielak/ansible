@@ -1,11 +1,27 @@
 ---
-- name: Create link to ansbile folder
+- name: Create link to ansible folder
   become: true
   file:
     src: /nas/ansible/vms
-    dest: "/home/{{ userlist[item]['username'] }}/ansible"
-    owner: "{{ userlist[item]['username'] }}"
-    group: "{{ userlist[item]['username'] }}"
+    dest: "/home/{{ userlist[1].username }}/ansible"
+    owner: "{{ userlist[1].username }}"
+    group: "{{ userlist[1].username }}"
     state: link
-  with_items:
-  - "{{ users[ansible_hostname] }}"
+
+- name: git clone ansible
+  become: true
+  remote_user: "{{  userlist[1].username }}"
+  git:
+    repo: 'git@github.com:energyvault462/ansible.git'
+    dest: "/home/{{  userlist[1].username }}/ansible"
+    key_file: "/home/{{  userlist[1].username }}/.ssh/id_rsa"
+    accept_hostkey: true
+
+- name: git clone secret files backup
+  become: true
+  remote_user: "{{  userlist[1].username }}"
+  git:
+    repo: 'git@bitbucket.org:energyvault462/secretfiles-backup.git'
+    dest: "/home/{{  userlist[1].username }}/secretfiles-backup"
+    key_file: "/home/{{  userlist[1].username }}/id_rsa"
+    accept_hostkey: true
