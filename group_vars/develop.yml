@@ -8,6 +8,7 @@ users:
   vmdevplex: [1,3]
   vmdevpar2: [1,2]
   vmdevsonarr: [1,3]
+  vmdevansible: [1]
 
 userlist:
   1:
