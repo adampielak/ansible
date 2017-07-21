@@ -1,0 +1,6 @@
+---
+- include: install-common-pkgs.yml
+
+- include: createusers.yml
+
+- include: update-os.yml
