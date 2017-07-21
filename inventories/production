@@ -1,11 +1,14 @@
 [systems]
 vmldev
-vmlansible ansible_connection=local
+vmansible ansible_connection=local
 vmplex
 vmpar2
 
 [production:children]
 systems
+
+[ansible]
+vmansible ansible_connection=local
 
 [plex]
 vmplex

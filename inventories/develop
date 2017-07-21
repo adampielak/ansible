@@ -1,6 +1,5 @@
 [systems]
 vmldev16
-vmlansible ansible_connection=local
 vmdevansible ansible_connection=local
 vmdevplex
 vmdevpar2
@@ -8,6 +7,9 @@ vmdevsonarr
 
 [develop:children]
 systems
+
+[ansible]
+vmdevansible ansible_connection=local
 
 [devops]
 vmldev16
