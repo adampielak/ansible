@@ -7,6 +7,6 @@
   roles: 
   - mountnfs
 
-#- hosts: sonarr
-#  roles:
-#  - couchpotato
+- hosts: sonarr
+  roles:
+  - ansible

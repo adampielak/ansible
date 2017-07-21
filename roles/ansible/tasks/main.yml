@@ -1,0 +1,11 @@
+--
+- name: Create link to ansbile folder
+  become: true
+  file:
+    src: /nas/ansible/vms
+    dest: "/home/{{ userlist[item]['username'] }}/ansible"
+    owner: "{{ userlist[item]['username'] }}"
+    group: "{{ userlist[item]['username'] }}"
+    state: link
+  with_items:
+  - "{{ users[ansible_hostname] }}"
