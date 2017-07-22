@@ -3,6 +3,7 @@ vmldev
 vmansible ansible_connection=local
 vmplex
 vmpar2
+vmsonarr
 
 [production:children]
 systems
@@ -21,3 +22,6 @@ vmldev
 
 [develop:children]
 devops
+
+[sonarr]
+vmsonarr
