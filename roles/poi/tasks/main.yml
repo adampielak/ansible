@@ -25,10 +25,10 @@
     state: directory
     
 - name: "add poi script to cron job"
-  remote_user: "{{ userlist[3].username }}"
+  become: true
   cron:
     name: plex-offline-indexer
-    minute: "13"
-    hour: "12"
-    job: "/home/{{ userlist[3].username }}/docker-poi/runit.sh > ~/logs/poi.log"
-    user: "{{ userlist[3].username }}"
+    minute: "0"
+    hour: "1"
+    job: "docker run -t -v /nas/media:/nas/media energyvault462/poi > /home/{{ userlist[3].username }}/logs/poi.log"
+    user: "root"
