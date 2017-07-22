@@ -5,6 +5,16 @@
   with_items:
   - nfs-common
 
+- name: create /nas folder
+  become: true
+  file:
+    path: /nas
+    state: directory
+    owner: "{{ userlist[1].username }}"
+    group: "{{ userlist[1].username }}"
+    mode: 0777
+    
+
 - name: "Mount {{ description }}"
   become: true
   mount:

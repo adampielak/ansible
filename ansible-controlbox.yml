@@ -3,7 +3,7 @@
   vars:
     description: "code/ansible"
     path: "/nas/ansible"
-    src: "192.168.13.11:/datapool/code/cp/crashplan/ansible"
+    src: "192.168.13.11:/datapool/code/cp/crashplan/ansible/vms"
   roles: 
   - mountnfs
 

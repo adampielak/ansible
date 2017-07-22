@@ -1,2 +1,4 @@
 ---
-
+- name: call docker role
+  include_role:
+    name: docker

@@ -2,8 +2,17 @@
 - name: Create link to ansible folder
   become: false
   file:
-    src: /nas/ansible/vms
+    src: /nas/ansible/
     dest: "/home/{{ userlist[1].username }}/ansible"
+    owner: "{{ userlist[1].username }}"
+    group: "{{ userlist[1].username }}"
+    state: link
+
+- name: Create link to secretfiles folder
+  become: false
+  file:
+    src: "/home/{{ userlist[1].username }}/secretfiles"
+    dest: "/nas/secretfiles"
     owner: "{{ userlist[1].username }}"
     group: "{{ userlist[1].username }}"
     state: link
