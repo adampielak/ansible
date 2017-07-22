@@ -93,12 +93,12 @@
     state: started
 
 - name: Create logs folder
-  remote_user: "{{ userlist[3].username }}"
+  become: true
   file: 
     path: "/home/{{ userlist[3].username }}/logs"
     owner: "{{ userlist[3].username }}" 
     group: "{{ userlist[3].username }}"
-    mode: 0644
+    mode: 0744
     state: directory
 
 - name: "add couchpotato backup script to cron job"

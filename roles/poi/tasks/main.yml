@@ -2,3 +2,33 @@
 - name: call docker role
   include_role:
     name: docker
+
+- name: git clone docker-poi
+  remote_user: "{{  userlist[3].username }}"
+  git:
+    repo: 'git@github.com:energyvault462/docker-poi.git'
+    dest: "~/docker-poi"
+    
+- name: run the buildit script.sh for the doi project
+  remote_user: "{{  userlist[3].username }}"
+  shell: ~/docker-poi/buildit.sh
+  args:
+    chdir: ~/docker-poi
+    
+- name: Create logs folder
+  become: true
+  file: 
+    path: "/home/{{ userlist[3].username }}/logs"
+    owner: "{{ userlist[3].username }}" 
+    group: "{{ userlist[3].username }}"
+    mode: 0744
+    state: directory
+    
+- name: "add poi script to cron job"
+  remote_user: "{{ userlist[3].username }}"
+  cron:
+    name: plex-offline-indexer
+    minute: "13"
+    hour: "12"
+    job: "/home/{{ userlist[3].username }}/docker-poi/runit.sh > ~/logs/poi.log"
+    user: "{{ userlist[3].username }}"
