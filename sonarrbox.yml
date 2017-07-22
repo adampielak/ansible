@@ -17,8 +17,8 @@
 
 - hosts: sonarr
   roles:
-#  - pia
-#  - sabnzbd
-#  - sonarr
-#  - couchpotato
+  - pia
+  - sabnzbd
+  - sonarr
+  - couchpotato
   - poi
