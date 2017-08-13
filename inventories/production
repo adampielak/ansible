@@ -4,6 +4,7 @@ vmansible ansible_connection=local
 vmplex
 vmpar2
 vmsonarr
+hvmldev
 
 [production:children]
 systems
@@ -19,6 +20,7 @@ vmpar2
 
 [devops]
 vmldev
+hvmldev
 
 [develop:children]
 devops

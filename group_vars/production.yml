@@ -8,6 +8,7 @@ users:
   vmplex: [1,3]
   VMPar2: [1,2]
   vmsonarr: [1,3]
+  hvmldev: [1,2]
 
 userlist:
   1:
