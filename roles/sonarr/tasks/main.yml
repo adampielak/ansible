@@ -89,9 +89,9 @@
     state: directory
 
 - name: "add sonarr backup script to cron job"
-  remote_user: "{{ userlist[3].username }}"
+  become: true
   cron:
     name: backup-sonarr
-    minute: "0"
-    hour: "3"
-    job: "/home/{{ userlist[3].username }}/sonarr-backup-restore/sonarr-backup.sh > /home/{{ userlist[3].username }}/logs/sonarr-backup.txt"
+    minute: "55"
+    hour: "15"
+    job: "/home/{{ userlist[3].username }}/sonarr-backup-restore/sonarr-backup.sh > /home/{{ userlist[3].username }}/logs/sonarr-backup.log"

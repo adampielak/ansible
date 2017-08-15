@@ -102,9 +102,9 @@
     state: directory
 
 - name: "add couchpotato backup script to cron job"
-  remote_user: "{{ userlist[3].username }}"
+  become: true
   cron:
-    name: backup-v
-    minute: "2"
-    hour: "3"
-    job: "/home/{{ userlist[3].username }}/couchpotato-backup-restore/backup.sh > /home/{{ userlist[3].username }}/logs/couchpotato-backup.txt"
+    name: backup-couchpotato
+    minute: "56"
+    hour: "15"
+    job: "/home/{{ userlist[3].username }}/couchpotato-backup-restore/backup.sh > /home/{{ userlist[3].username }}/logs/couchpotato-backup.log"

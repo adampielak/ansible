@@ -9,7 +9,7 @@
     repo: 'git@github.com:energyvault462/docker-poi.git'
     dest: "~/docker-poi"
     
-- name: run the buildit script.sh for the doi project
+- name: run the buildit script.sh for the poi project
   remote_user: "{{  userlist[3].username }}"
   shell: ~/docker-poi/buildit.sh
   args:
