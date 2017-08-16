@@ -105,6 +105,6 @@
   become: true
   cron:
     name: backup-couchpotato
-    minute: "56"
-    hour: "15"
+    minute: "3"
+    hour: "3"
     job: "/home/{{ userlist[3].username }}/couchpotato-backup-restore/backup.sh > /home/{{ userlist[3].username }}/logs/couchpotato-backup.log"

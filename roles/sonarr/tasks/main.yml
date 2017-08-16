@@ -19,10 +19,20 @@
   stat: path="/home/{{ userlist[3].username }}/.config/NzbDrone/config.xml"
   register: nzbdrone
 
+- name: make /home/mce/.config/NzbDrone  folder
+  become: false
+  remote_user: "{{ userlist[3]['username'] }}"
+  file:
+    path: /home/mce/.config/NzbDrone
+    owner: "{{ userlist[3]['username'] }}"
+    group: "{{ userlist[3]['username'] }}"
+    state: directory
+    mode: 0777
+
 - name: run rsync to restore sonarr files
   become: false
   remote_user: "{{ userlist[3]['username'] }}"
-  command: "rsync -av --delete /nas/backup/sonarr/NzbDrone /home/mce/.config/"
+  command: "~/sonarr-backup-restore/sonarr-restore.sh"
   when:
   - not nzbdrone.stat.exists
 
@@ -92,6 +102,6 @@
   become: true
   cron:
     name: backup-sonarr
-    minute: "55"
-    hour: "15"
+    minute: "01"
+    hour: "3"
     job: "/home/{{ userlist[3].username }}/sonarr-backup-restore/sonarr-backup.sh > /home/{{ userlist[3].username }}/logs/sonarr-backup.log"
