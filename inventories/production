@@ -5,6 +5,7 @@ vmplex
 vmpar2
 vmsonarr
 hvmldev
+brentubuntu
 
 [production:children]
 systems
@@ -21,6 +22,7 @@ vmpar2
 [devops]
 vmldev
 hvmldev
+brentubuntu
 
 [develop:children]
 devops
